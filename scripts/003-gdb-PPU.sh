@@ -1,15 +1,22 @@
 #!/bin/sh -e
-# gdb-PPU.sh by Dan Peori (dan.peori@oopo.net)
+# gdb-PPU.sh by Naomi Peori (naomi@peori.ca)
 
-GDB="gdb-7.4"
+GDB="gdb-7.5.1"
 
 if [ ! -d ${GDB} ]; then
 
   ## Download the source code.
-  if [ ! -f ${GDB}.tar.bz2 ]; then wget --continue ftp://ftp.gnu.org/gnu/gdb/${GDB}.tar.bz2; fi
+  if [ ! -f ${GDB}.tar.bz2 ]; then wget --continue https://ftp.gnu.org/gnu/gdb/${GDB}.tar.bz2; fi
+
+  ## Download an up-to-date config.guess and config.sub
+  if [ ! -f config.guess ]; then wget --continue http://git.savannah.gnu.org/cgit/config.git/plain/config.guess; fi
+  if [ ! -f config.sub ]; then wget --continue http://git.savannah.gnu.org/cgit/config.git/plain/config.sub; fi
 
   ## Unpack the source code.
   tar xfvj ${GDB}.tar.bz2
+
+  ## Replace config.guess and config.sub
+  cp config.guess config.sub ${GDB}
 
 fi
 
